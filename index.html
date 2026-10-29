@@ -671,7 +671,7 @@
     });
 
     // =========================================================================
-    // إعدادات إعلانات Adsgram الرسمية (Block ID: 56745) + تهدئة 10 ثوانٍ
+    // إعدادات وتشغيل إعلانات Adsgram الرسمية (Block ID: 56745) + تهدئة 10 ثوانٍ
     // =========================================================================
     const ADSGRAM_BLOCK_ID = '56745';
     const AD_REWARD_HASH = 500;
@@ -684,7 +684,8 @@
     const AD_BTN_COOLDOWN_CLASS = 'w-full mt-3 py-3.5 px-4 rounded-2xl bg-slate-800 text-slate-400 font-extrabold text-sm flex items-center justify-center gap-2 transition cursor-not-allowed border border-slate-700';
 
     function initAdsgramController() {
-      if (window.Adsgram) {
+      const isTelegramEnv = Boolean(tg && tg.initDataUnsafe && (tg.initDataUnsafe.user || tg.initDataUnsafe.query_id));
+      if (window.Adsgram && isTelegramEnv) {
         try {
           AdController = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID });
         } catch (e) {}
@@ -730,11 +731,13 @@
 
       const btn = document.getElementById('watchAdRewardBtn');
       const btnText = document.getElementById('watchAdBtnText');
-      if (!AdController) {
+      const isTelegramEnv = Boolean(tg && tg.initDataUnsafe && (tg.initDataUnsafe.user || tg.initDataUnsafe.query_id));
+
+      if (!AdController && isTelegramEnv) {
         initAdsgramController();
       }
 
-      if (AdController) {
+      if (AdController && isTelegramEnv) {
         btn.disabled = true;
         btnText.textContent = 'جاري تحميل الإعلان...';
 
@@ -743,17 +746,13 @@
             grantAdReward();
           })
           .catch(() => {
-            const isTelegramEnv = Boolean(tg && tg.initDataUnsafe && tg.initDataUnsafe.user);
-            if (!isTelegramEnv) {
-              grantAdReward();
-            } else {
-              btn.disabled = false;
-              btn.className = AD_BTN_NORMAL_CLASS;
-              btnText.textContent = '🎬 شاهد إعلان واربح 500 H';
-              showToast('لم يكتمل الإعلان أو لا يوجد إعلان متاح حالياً، حاول مرة أخرى', 'error');
-            }
+            btn.disabled = false;
+            btn.className = AD_BTN_NORMAL_CLASS;
+            btnText.textContent = '🎬 شاهد إعلان واربح 500 H';
+            showToast('لم يكتمل الإعلان أو لا يوجد إعلان متاح حالياً، حاول مرة أخرى', 'error');
           });
       } else {
+        // في حالة المعاينة خارج تليجرام، نمنح المكافأة مباشرة للتجربة بسلاسة
         grantAdReward();
       }
     }
