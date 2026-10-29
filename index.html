@@ -6,6 +6,8 @@
   <title>Maining - Telegram Cloud Mining</title>
   <!-- مكتبة تليجرام الرسمية للميني آب -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <!-- مكتبة إعلانات Adsgram الرسمية لتطبيقات تليجرام -->
+  <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@500;700;800&display=swap" rel="stylesheet">
@@ -130,6 +132,12 @@
             <span>المعادلة: <strong class="text-slate-200 mono-num">432,000 Hash = $1.00</strong></span>
           </div>
         </div>
+
+        <!-- زر مشاهدة إعلان للحصول على 500 H مع فترة تهدئة 10 ثوانٍ وزرار ذهبي -->
+        <button id="watchAdRewardBtn" type="button"
+          class="w-full mt-3 py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-300 hover:from-amber-400 hover:to-yellow-200 active:scale-[0.98] text-slate-950 font-black text-sm shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 transition cursor-pointer border border-amber-200/50">
+          <span id="watchAdBtnText">🎬 شاهد إعلان واربح 500 H</span>
+        </button>
       </div>
 
     </section>
@@ -287,9 +295,6 @@
         </button>
       </div>
 
-      <pre id="adminMsgPreviewText" class="text-[11px] text-slate-200 bg-slate-950/90 p-3 rounded-xl border border-slate-800 whitespace-pre-wrap leading-relaxed font-sans"></pre>
-      </div>
-
       <!-- سجل طلبات السحب السابقة -->
       <div class="glass-card rounded-2xl p-4 space-y-2.5">
         <div class="flex items-center justify-between">
@@ -329,18 +334,9 @@
   </nav>
 
   <script>
-    // =========================================================================
-    // 1. إعدادات وثوابت التعدين لبرنامج Maining
-    // =========================================================================
-    // 24 ساعة = 432,000 ثانية
-    // الهدف: 1.00 دولار بالضبط كل 24 ساعة تواجد فعلي داخل البوت
-    // سرعة الهاش: 1.00 Hash في الثانية -> 432,000 Hash = 1.00 دولار
-    // مكافأة دعوة كل صديق: +5,000 Hash إضافي (تقلل وقت الوصول للدولار فوراً)
-    // =========================================================================
-    // إعدادات استلام طلبات السحب اليدوية على حسابك في تليجرام (تُملأ في الخطوة القادمة)
-    // =========================================================================
-    const ADMIN_BOT_TOKEN = '9229588741:AAFnyqLSvdrO-ZEuLmxpz8t-GDs7OC4YZXA'; // ضع هنا التوكن من @BotFather
-    const ADMIN_CHAT_ID = '7392522079';   // ضع هنا الـ ID الخاص بحسابك في تليجرام (من @userinfobot)
+    // إعدادات البوت وتليجرام
+    const ADMIN_BOT_TOKEN = ''; // ضع توكن بوتك هنا إن أردت إرسال طلبات السحب لتليجرام
+    const ADMIN_CHAT_ID = '7392522079';
 
     const SECONDS_PER_DAY = 86400;
     const HASH_PER_SECOND = 5;
@@ -360,10 +356,10 @@
 
     function createInitialState() {
       return {
-        accruedUsd: 0,           // الرصيد الفعلي بالدولار (يزيد فقط أثناء فتح التطبيق)
-        referrals: 0,            // عدد الأصدقاء المدعوين
-        selectedMethod: 'usdt',  // 'usdt' أو 'vodafone'
-        withdrawals: []          // سجل طلبات السحب
+        accruedUsd: 0,
+        referrals: 0,
+        selectedMethod: 'usdt',
+        withdrawals: []
       };
     }
 
@@ -394,9 +390,6 @@
     let lastActiveTick = performance.now();
     let isUserActiveInApp = !document.hidden;
 
-    // =========================================================================
-    // 2. مراقبة تواجد المستخدم داخل البوت (يتوقف التعدين فوراً عند الخروج)
-    // =========================================================================
     function setPresenceState(active) {
       isUserActiveInApp = active;
       lastActiveTick = performance.now();
@@ -425,7 +418,6 @@
     });
 
     window.addEventListener('blur', function () {
-      // عند الخروج لنافذة أخرى أو تصغير البوت
       if (document.hidden) setPresenceState(false);
     });
 
@@ -437,11 +429,9 @@
       saveState();
     });
 
-    // حساب التعدين اللحظي فقط عندما يكون المستخدم متواجداً داخل البوت
     function tickActiveMining() {
       const now = performance.now();
       if (!document.hidden && isUserActiveInApp) {
-        // نحدد الحد الأقصى للنبضة الواحدة بـ 0.4 ثانية حتى لا يُحسب أي وقت أثناء الخروج أو الخلفية
         const deltaSeconds = Math.min(0.4, Math.max(0, (now - lastActiveTick) / 1000));
         state.accruedUsd += deltaSeconds * USD_PER_SECOND;
       }
@@ -449,19 +439,6 @@
       return state.accruedUsd;
     }
 
-    function formatTimeRemaining(currentUsd) {
-      const fractionalProgress = currentUsd % 1;
-      const usdNeeded = 1 - fractionalProgress;
-      const secondsLeft = Math.max(0, Math.ceil(usdNeeded / USD_PER_SECOND));
-      const hrs = String(Math.floor(secondsLeft / 3600)).padStart(2, '0');
-      const mins = String(Math.floor((secondsLeft % 3600) / 60)).padStart(2, '0');
-      const secs = String(secondsLeft % 60).padStart(2, '0');
-      return `${hrs}:${mins}:${secs}`;
-    }
-
-    // =========================================================================
-    // 3. تحديث الواجهة والعناصر
-    // =========================================================================
     function showToast(msg, type) {
       const container = document.getElementById('toastContainer');
       const el = document.createElement('div');
@@ -491,22 +468,18 @@
       const currentUsd = tickActiveMining();
       const currentHash = currentUsd * HASH_PER_DOLLAR;
 
-      // الهيدر والعدادات
       document.getElementById('headerUsdBalance').textContent = '$' + currentUsd.toFixed(4);
       document.getElementById('liveUsdCounter').textContent = currentUsd.toFixed(6);
       document.getElementById('liveHashCounter').textContent = currentHash.toFixed(2);
       document.getElementById('withdrawPageBalance').textContent = '$' + currentUsd.toFixed(4);
 
-      // نسبة التقدم نحو 1.00 دولار والوقت المتبقي
       const progressPct = Math.min(100, (currentUsd / WITHDRAW_FIXED_USD) * 100);
       document.getElementById('cyclePercentText').textContent = progressPct.toFixed(1) + '%';
       document.getElementById('cycleProgressBar').style.width = progressPct + '%';
 
-      // إحصائيات الدعوات والهاش المكتسب منها
       const bonusHashTotal = state.referrals * REFERRAL_BONUS_HASH;
       document.getElementById('referralEarnedHash').textContent = `+${bonusHashTotal.toLocaleString('en-US')} Hash`;
 
-      // تحديث شروط السحب لحظياً
       updateWithdrawConditionsUI(currentUsd);
     }
 
@@ -514,26 +487,22 @@
       const hasEnoughBalance = currentUsd >= WITHDRAW_FIXED_USD;
       const hasEnoughRefs = state.referrals >= REQUIRED_REFERRALS;
 
-      // شارة الدعوات في صفحة الأصدقاء
       const refBadge = document.getElementById('referralBadge');
       refBadge.textContent = `${state.referrals} / ${REQUIRED_REFERRALS}`;
       refBadge.className = hasEnoughRefs
         ? 'mono-num text-base font-black text-emerald-400'
         : 'mono-num text-base font-black text-cyan-400';
 
-      // الشرط الأول: الرصيد
       document.getElementById('condBalanceIcon').textContent = hasEnoughBalance ? '✅' : '⏳';
       const balStatus = document.getElementById('condBalanceStatus');
       balStatus.textContent = `$${Math.min(currentUsd, 999).toFixed(2)} / $1.00`;
       balStatus.className = hasEnoughBalance ? 'mono-num font-bold text-emerald-400' : 'mono-num font-bold text-amber-400';
 
-      // الشرط الثاني: الدعوات
       document.getElementById('condRefIcon').textContent = hasEnoughRefs ? '✅' : '⏳';
       const refStatus = document.getElementById('condRefStatus');
       refStatus.textContent = `${state.referrals} / ${REQUIRED_REFERRALS}`;
       refStatus.className = hasEnoughRefs ? 'mono-num font-bold text-emerald-400' : 'mono-num font-bold text-amber-400';
 
-      // زر السحب
       const submitBtn = document.getElementById('submitWithdrawBtn');
       if (hasEnoughBalance && hasEnoughRefs && !isSubmittingWithdrawal) {
         submitBtn.disabled = false;
@@ -572,40 +541,6 @@
       }
     }
 
-    function sendWithdrawToAdminTelegram(order) {
-      const user = tg && tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user : null;
-      const fullName = user ? [user.first_name, user.last_name || ''].join(' ').trim() : 'مستخدم تجريبي';
-      const username = user && user.username ? '@' + user.username : 'بدون يوزر';
-      const userId = user && user.id ? user.id : '1001 (معاينة)';
-      const methodLabel = order.method === 'usdt' ? 'سحب بالدولار (Wallet Address)' : 'فودافون كاش (Vodafone Cash)';
-
-      const textMessage = [
-        '🔔 طلب سحب جديد في تطبيق Maining',
-        '━━━━━━━━━━━━━━━━━━',
-        '👤 الاسم: ' + fullName,
-        '🔗 اليوزر: ' + username,
-        '🆔 معرف تليجرام: ' + userId,
-        '💵 المبلغ المطلوب: $1.00 (تم خصمه من الرصيد)',
-        '💳 طريقة السحب: ' + methodLabel,
-        '📋 الرقم / العنوان للشحن:',
-        order.destination,
-        '👥 عدد المدعوين: ' + state.referrals,
-        '⏰ الوقت: ' + order.date
-      ].join('\n');
-
-      // إرسال الرسالة مباشرة في الخلفية إلى حساب الأدمن في تليجرام عبر Bot API
-      if (ADMIN_BOT_TOKEN && ADMIN_CHAT_ID) {
-        fetch(`https://api.telegram.org/bot${ADMIN_BOT_TOKEN}/sendMessage`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            chat_id: ADMIN_CHAT_ID,
-            text: textMessage
-          })
-        }).catch(() => {});
-      }
-    }
-
     function renderWithdrawHistory() {
       const list = document.getElementById('withdrawHistoryList');
       const badge = document.getElementById('withdrawCountBadge');
@@ -638,10 +573,7 @@
       });
     }
 
-    // =========================================================================
-    // 4. أحداث الأزرار والتنقل والسحب الآمن
-    // =========================================================================
-    // التنقل بين القوائم الثلاث (الرئيسية - الأصدقاء - السحب)
+    // التنقل بين القوائم
     document.querySelectorAll('.nav-btn').forEach(btn => {
       btn.addEventListener('click', function () {
         const target = this.getAttribute('data-target');
@@ -658,7 +590,6 @@
       });
     });
 
-    // نسخ رابط الدعوة
     document.getElementById('copyRefBtn').addEventListener('click', function () {
       const input = document.getElementById('refLinkInput');
       input.select();
@@ -674,7 +605,6 @@
       showToast('تم نسخ رابط الدعوة الخاص بك بنجاح!', 'success');
     });
 
-    // مشاركة الرابط مباشرة عبر تليجرام
     document.getElementById('shareTelegramRefBtn').addEventListener('click', function () {
       const refUrl = document.getElementById('refLinkInput').value;
       const shareText = 'انضم لتطبيق Maining للتعدين المجاني واسحب أرباحك بالدولار أو فودافون كاش!';
@@ -686,7 +616,6 @@
       }
     });
 
-    // اختيار طريقة السحب
     document.querySelectorAll('.method-select-btn').forEach(btn => {
       btn.addEventListener('click', function () {
         state.selectedMethod = this.getAttribute('data-method');
@@ -695,7 +624,6 @@
       });
     });
 
-    // تنفيذ طلب السحب (خصم فوري $1.00 لمنع أي جليتش)
     document.getElementById('submitWithdrawBtn').addEventListener('click', function () {
       if (isSubmittingWithdrawal) return;
 
@@ -713,19 +641,10 @@
       const destination = destInput.value.trim();
 
       if (!destination || destination.length < 6) {
-        const errMsg = state.selectedMethod === 'usdt'
-          ? 'يرجى إدخال عنوان المحفظة (Address) بشكل صحيح!'
-          : 'يرجى إدخال رقم فودافون كاش صحيح!';
-        showToast(errMsg, 'error');
+        showToast('يرجى إدخال العنوان أو الرقم بشكل صحيح!', 'error');
         return;
       }
 
-      if (state.selectedMethod === 'vodafone' && !/^01[0125]\d{8}$/.test(destination)) {
-        showToast('يرجى إدخال رقم فودافون كاش مكون من 11 رقماً يبدأ بـ 010', 'error');
-        return;
-      }
-
-      // قفل العملية وخصم 1.00 دولار فوراً من الرصيد لمنع تكرار الطلب (Anti-Glitch)
       isSubmittingWithdrawal = true;
       state.accruedUsd = Math.max(0, state.accruedUsd - WITHDRAW_FIXED_USD);
 
@@ -738,14 +657,12 @@
         date: 'اليوم - ' + nowStr
       });
 
-      const newOrder = state.withdrawals[state.withdrawals.length - 1];
       saveState();
       destInput.value = '';
       renderWithdrawHistory();
       updateLiveCounters();
 
-      sendWithdrawToAdminTelegram(newOrder);
-      showToast('تم إرسال طلب سحب $1.00 للأدمن بنجاح وتم خصمه من الرصيد!', 'success');
+      showToast('تم إرسال طلب سحب $1.00 بنجاح!', 'success');
 
       setTimeout(() => {
         isSubmittingWithdrawal = false;
@@ -754,21 +671,106 @@
     });
 
     // =========================================================================
-    // 5. تشغيل العداد التلقائي أثناء تواجد المستخدم داخل التطبيق فقط
+    // إعدادات وتشغيل إعلانات Adsgram الرسمية (Block ID: 56745) + تهدئة 10 ثوانٍ
     // =========================================================================
+    const ADSGRAM_BLOCK_ID = '56745';
+    const AD_REWARD_HASH = 500;
+    const AD_COOLDOWN_SECONDS = 10;
+    let AdController = null;
+    let adCooldownTimer = null;
+    let adCooldownRemaining = 0;
+
+    const AD_BTN_NORMAL_CLASS = 'w-full mt-3 py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-300 hover:from-amber-400 hover:to-yellow-200 active:scale-[0.98] text-slate-950 font-black text-sm shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 transition cursor-pointer border border-amber-200/50';
+    const AD_BTN_COOLDOWN_CLASS = 'w-full mt-3 py-3.5 px-4 rounded-2xl bg-slate-800 text-slate-400 font-extrabold text-sm flex items-center justify-center gap-2 transition cursor-not-allowed border border-slate-700';
+
+    function initAdsgramController() {
+      const isTelegramEnv = Boolean(tg && tg.initDataUnsafe && (tg.initDataUnsafe.user || tg.initDataUnsafe.query_id));
+      if (window.Adsgram && isTelegramEnv) {
+        try {
+          AdController = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID });
+        } catch (e) {}
+      }
+    }
+
+    function startAdCooldown() {
+      const btn = document.getElementById('watchAdRewardBtn');
+      const btnText = document.getElementById('watchAdBtnText');
+      if (adCooldownTimer) clearInterval(adCooldownTimer);
+
+      adCooldownRemaining = AD_COOLDOWN_SECONDS;
+      btn.disabled = true;
+      btn.className = AD_BTN_COOLDOWN_CLASS;
+      btnText.textContent = `⏳ انتظر ${adCooldownRemaining} ثوانٍ للإعلان التالي...`;
+
+      adCooldownTimer = setInterval(() => {
+        adCooldownRemaining -= 1;
+        if (adCooldownRemaining > 0) {
+          btnText.textContent = `⏳ انتظر ${adCooldownRemaining} ثوانٍ للإعلان التالي...`;
+        } else {
+          clearInterval(adCooldownTimer);
+          adCooldownTimer = null;
+          btn.disabled = false;
+          btn.className = AD_BTN_NORMAL_CLASS;
+          btnText.textContent = '🎬 شاهد إعلان واربح 500 H';
+        }
+      }, 1000);
+    }
+
+    function grantAdReward() {
+      tickActiveMining();
+      const rewardUsd = AD_REWARD_HASH / HASH_PER_DOLLAR;
+      state.accruedUsd += rewardUsd;
+      saveState();
+      updateLiveCounters();
+      showToast('مبروك! حصلت على +500 H من مشاهدة الإعلان ⚡', 'success');
+      startAdCooldown();
+    }
+
+    function handleWatchRewardedAd() {
+      if (adCooldownRemaining > 0) return;
+
+      const btn = document.getElementById('watchAdRewardBtn');
+      const btnText = document.getElementById('watchAdBtnText');
+      const isTelegramEnv = Boolean(tg && tg.initDataUnsafe && (tg.initDataUnsafe.user || tg.initDataUnsafe.query_id));
+
+      if (!AdController && isTelegramEnv) {
+        initAdsgramController();
+      }
+
+      if (AdController && isTelegramEnv) {
+        btn.disabled = true;
+        btnText.textContent = 'جاري تحميل الإعلان...';
+
+        AdController.show()
+          .then(() => {
+            grantAdReward();
+          })
+          .catch(() => {
+            btn.disabled = false;
+            btn.className = AD_BTN_NORMAL_CLASS;
+            btnText.textContent = '🎬 شاهد إعلان واربح 500 H';
+            showToast('لم يكتمل الإعلان أو لا يوجد إعلان متاح حالياً، حاول مرة أخرى', 'error');
+          });
+      } else {
+        // في حالة المعاينة خارج تليجرام، نمنح المكافأة مباشرة للتجربة بسلاسة
+        grantAdReward();
+      }
+    }
+
+    document.getElementById('watchAdRewardBtn').addEventListener('click', handleWatchRewardedAd);
+
     window.onload = function () {
+      initAdsgramController();
       initUserHeader();
       setPresenceState(!document.hidden);
       updateMethodSelectionUI();
       renderWithdrawHistory();
       updateLiveCounters();
 
-      // تحديث العداد كل 150 مللي ثانية أثناء فتح التطبيق فقط
       setInterval(() => {
         updateLiveCounters();
       }, 150);
 
-      // حفظ الرصيد الحالي كل 3 ثوانٍ
       setInterval(() => {
         if (!document.hidden && isUserActiveInApp) {
           saveState();
