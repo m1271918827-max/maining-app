@@ -9,8 +9,9 @@
   <!-- مكتبة إعلانات Adsgram الرسمية لتطبيقات تليجرام -->
   <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
   <!-- Tailwind CSS -->
-  <script src='//libtl.com/sdk.js' data-zone='12149919' data-sdk='show_12149919'></script>
   <!-- كود مونتاج الجديد -->
+  <script src='//libtl.com/sdk.js' data-zone='12149919' data-sdk='show_12149919'></script>
+<script src='//libtl.com/sdk.js' data-zone='12007986' data-sdk='show_12007986'></script>
   <script>
     // إعلانات التفاعل عند الانتقال بين القوائم وفي الوقت المحدد
     show_12149919({
@@ -149,8 +150,8 @@
         </div>
 
         <!-- زر مشاهدة إعلان للحصول على 500 H مع فترة تهدئة 10 ثوانٍ وزرار ذهبي -->
-        <button id="watchAdRewardBtn" type="button"
-          class="w-full mt-3 py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-300 hover:from-amber-400 hover:to-yellow-200 active:scale-[0.98] text-slate-950 font-black text-sm shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 transition cursor-pointer border border-amber-200/50">
+      <button id="watchAdRewardBtn" type="button" onclick="claimHashReward()"
+     class="w-full mt-3 py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-300 hover:from-amber-400 hover:to-yellow-200 active:scale-[0.98] text-slate-950 font-black text-sm shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 transition cursor-pointer border border-amber-200/50">
           <span id="watchAdBtnText">🎬 شاهد إعلان واربح 500 H</span>
         </button>
       </div>
@@ -793,5 +794,23 @@
       }, 3000);
     };
   </script>
+  </script>
+
+    <!-- هنحط كود الإعلان الجديد هنا -->
+    <script>
+    function claimHashReward() {
+        if (typeof show_12007986 === 'function') {
+            show_12007986().then(() => {
+                alert('تمت مشاهدة الإعلان بنجاح! مبروك المكافأة.');
+                // هنا سيتم إضافة المكافأة
+            }).catch(e => {
+                console.log("خطأ في الإعلان:", e);
+            });
+        }
+    }
+    </script>
+
+</body>
+</html>
 </body>
 </html>
