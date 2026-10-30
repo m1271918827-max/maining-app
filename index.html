@@ -12,10 +12,17 @@
   <script src='//libtl.com/sdk.js' data-zone='12149919' data-sdk='show_12149919'></script>
   <!-- كود مونتاج الجديد -->
   <script>
-    // تفعيل الإعلان التلقائي عند التفاعل
-    if (typeof show_12149919 === 'function') {
-        show_12149919();
-    }
+    // إعلانات التفاعل عند الانتقال بين القوائم وفي الوقت المحدد
+    show_12149919({
+      type: 'inApp',
+      inAppSettings: {
+        frequency: 2,
+        capping: 0.1,
+        interval: 30,
+        timeout: 5,
+        everyPage: false
+      }
+    });
 </script>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@500;700;800&display=swap" rel="stylesheet">
