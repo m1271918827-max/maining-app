@@ -151,7 +151,7 @@
           </div>
         </div>
 
-        <!-- زر مشاهدة إعلان للحصول على 500 H مع فترة تهدئة 10 ثوانٍ -->
+        <!-- زر مشاهدة إعلان للحصول على 500 H -->
         <button id="watchAdRewardBtn" type="button"
           class="w-full mt-3 py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-300 hover:from-amber-400 hover:to-yellow-200 active:scale-[0.98] text-slate-950 font-black text-sm shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 transition cursor-pointer border border-amber-200/50">
           <span id="watchAdBtnText">🎬 شاهد إعلان واربح 500 H</span>
@@ -164,19 +164,14 @@
     <!-- القائمة الثانية: دعوة الأصدقاء (Friends)    -->
     <!-- ========================================== -->
     <section id="viewFriends" class="hidden space-y-4 my-auto">
-
-      <!-- بطاقة مكافأة الدعوة -->
       <div class="glass-card rounded-3xl p-5 text-center space-y-3 relative overflow-hidden">
         <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-400 to-emerald-500 text-slate-950 flex items-center justify-center text-3xl mx-auto shadow-lg">
           🎁
         </div>
-
         <h2 class="text-base font-black text-white">ادعُ أصدقاءك وقلّل وقت الوصول للدولار!</h2>
         <p class="text-xs text-slate-300 leading-relaxed">
           كل صديق يدخل البوت من خلال رابطك الخاص يمنحك فوراً <strong class="text-emerald-400 mono-num">+10,000 Hash</strong> إضافي.
         </p>
-
-        <!-- إحصائيات الدعوة -->
         <div class="grid grid-cols-2 gap-2.5 pt-2">
           <div class="bg-slate-900/85 border border-slate-800 rounded-2xl p-3">
             <span class="text-[11px] text-slate-400 block">إجمالي المدعوين</span>
@@ -185,7 +180,6 @@
               <span class="text-[10px] text-slate-400">(شرط السحب)</span>
             </div>
           </div>
-
           <div class="bg-slate-900/85 border border-slate-800 rounded-2xl p-3">
             <span class="text-[11px] text-slate-400 block">الهاش المكتسب من الدعوات</span>
             <span id="referralEarnedHash" class="mono-num text-base font-black text-emerald-400 block mt-1" dir="ltr">+0 Hash</span>
@@ -193,46 +187,23 @@
         </div>
       </div>
 
-      <!-- رابط الإحالة الخاص بالمستخدم -->
       <div class="glass-card rounded-2xl p-4 space-y-3">
-        <label for="refLinkInput" class="block text-xs font-extrabold text-white">
-          رابط الدعوة الخاص بك:
-        </label>
-
+        <label for="refLinkInput" class="block text-xs font-extrabold text-white">رابط الدعوة الخاص بك:</label>
         <div class="flex items-center gap-2">
           <input id="refLinkInput" type="text" readonly value="https://t.me/Maining_eg_bot?start=ref_1001"
             class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-slate-200 mono-num focus:outline-none" dir="ltr" />
-          <button id="copyRefBtn" type="button"
-            class="shrink-0 px-4 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-extrabold text-xs transition">
-            نسخ الرابط
-          </button>
+          <button id="copyRefBtn" type="button" class="shrink-0 px-4 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-extrabold text-xs transition">نسخ الرابط</button>
         </div>
-
-        <button id="shareTelegramRefBtn" type="button"
-          class="w-full py-3 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 hover:from-sky-400 hover:to-cyan-400 text-slate-950 font-extrabold text-xs flex items-center justify-center gap-2 transition shadow-md">
-          <span>✈️</span>
-          <span>مشاركة الرابط مباشرة مع أصدقائك في تليجرام</span>
+        <button id="shareTelegramRefBtn" type="button" class="w-full py-3 rounded-xl bg-gradient-to-r from-sky-500 to-cyan-500 hover:from-sky-400 hover:to-cyan-400 text-slate-950 font-extrabold text-xs flex items-center justify-center gap-2 transition shadow-md">
+          <span>✈️</span><span>مشاركة الرابط مباشرة مع أصدقائك في تليجرام</span>
         </button>
       </div>
-
-      <!-- توضيح كيف تختصر الدعوات الوقت -->
-      <div class="glass-card rounded-2xl p-4 space-y-2 text-xs text-slate-300">
-        <h3 class="font-extrabold text-white text-xs">💡 كيف تسرّع الدعوات سحب الـ 1 دولار؟</h3>
-        <ul class="space-y-1.5 text-[11px] text-slate-400 leading-relaxed">
-          <li>• الدولار الكامل يحتاج <strong class="text-white mono-num">432,000 Hash</strong>.</li>
-          <li>• عند دعوة <strong class="text-cyan-300">صديقين (2)</strong> تكسب <strong class="text-emerald-400 mono-num">+20,000 Hash</strong> فوراً + تفتح ميزة السحب.</li>
-          <li>• كل صديق إضافي يضيف <strong class="text-emerald-400 mono-num">+10,000 Hash</strong> لرصيدك مباشرة لتصل إلى الـ 1 دولار بشكل أسرع!</li>
-        </ul>
-      </div>
-
     </section>
 
     <!-- ========================================== -->
     <!-- القائمة الثالثة: السحب (Withdraw)          -->
     <!-- ========================================== -->
     <section id="viewWithdraw" class="hidden space-y-4 my-auto">
-
-      <!-- ملخص الرصيد وشروط السحب الإجبارية -->
       <div class="glass-card rounded-2xl p-4 space-y-3">
         <div class="flex items-center justify-between border-b border-slate-800 pb-3">
           <div>
@@ -244,116 +215,51 @@
             <span id="withdrawPageBalance" class="mono-num text-lg font-black text-emerald-400">$0.0000</span>
           </div>
         </div>
-
-        <!-- حالة الشرطين -->
         <div class="space-y-2 text-xs">
           <p class="font-bold text-slate-300">شروط فتح السحب:</p>
-
           <div id="condBalanceRow" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/80 border border-slate-800">
-            <span class="flex items-center gap-2">
-              <span id="condBalanceIcon">⏳</span>
-              <span>1. تجميع مبلغ <strong>$1.00</strong> على الأقل (432,000 هاش)</span>
-            </span>
+            <span class="flex items-center gap-2"><span id="condBalanceIcon">⏳</span><span>1. تجميع مبلغ <strong>$1.00</strong> على الأقل (432,000 هاش)</span></span>
             <span id="condBalanceStatus" class="mono-num font-bold text-amber-400">$0.00 / $1.00</span>
           </div>
-
           <div id="condRefRow" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-900/80 border border-slate-800">
-            <span class="flex items-center gap-2">
-              <span id="condRefIcon">⏳</span>
-              <span>2. دعوة <strong>شخصين (2)</strong> على الأقل للبوت</span>
-            </span>
+            <span class="flex items-center gap-2"><span id="condRefIcon">⏳</span><span>2. دعوة <strong>شخصين (2)</strong> على الأقل للبوت</span></span>
             <span id="condRefStatus" class="mono-num font-bold text-amber-400">0 / 2</span>
           </div>
         </div>
       </div>
 
-      <!-- اختيار طريقة السحب -->
       <div class="glass-card rounded-2xl p-4 space-y-4">
         <div>
           <label class="block text-xs font-extrabold text-white mb-2">اختر طريقة السحب:</label>
           <div class="grid grid-cols-2 gap-2.5">
-            <button type="button" id="methodUsdtBtn" data-method="usdt"
-              class="method-select-btn p-3 rounded-xl border-2 border-emerald-500 bg-emerald-500/15 text-white font-bold text-xs flex flex-col items-center gap-1 transition">
-              <span class="text-lg">💵</span>
-              <span>سحب بالدولار (Address)</span>
+            <button type="button" id="methodUsdtBtn" data-method="usdt" class="method-select-btn p-3 rounded-xl border-2 border-emerald-500 bg-emerald-500/15 text-white font-bold text-xs flex flex-col items-center gap-1 transition">
+              <span class="text-lg">💵</span><span>سحب بالدولار (Address)</span>
             </button>
-
-            <button type="button" id="methodVfBtn" data-method="vodafone"
-              class="method-select-btn p-3 rounded-xl border border-slate-700 bg-slate-900/60 text-slate-300 font-bold text-xs flex flex-col items-center gap-1 transition">
-              <span class="text-lg">📱</span>
-              <span>فودافون كاش</span>
+            <button type="button" id="methodVfBtn" data-method="vodafone" class="method-select-btn p-3 rounded-xl border border-slate-700 bg-slate-900/60 text-slate-300 font-bold text-xs flex flex-col items-center gap-1 transition">
+              <span class="text-lg">📱</span><span>فودافون كاش</span>
             </button>
           </div>
         </div>
-
-        <!-- قيمة السحب الثابتة ($1.00 لكل عملية) -->
-        <div class="bg-slate-900/90 rounded-xl p-3 border border-slate-800 flex items-center justify-between">
-          <div>
-            <span class="text-xs font-bold text-slate-300 block">قيمة طلب السحب الواحد (ثابتة)</span>
-            <span class="text-[11px] text-slate-400">إذا جمعت $2.00 يمكنك إرسال طلبين متتاليين</span>
-          </div>
-          <span class="mono-num text-base font-black text-amber-400 bg-amber-500/15 px-3 py-1 rounded-lg border border-amber-500/30">
-            $1.00
-          </span>
-        </div>
-
-        <!-- حقل إدخال العنوان أو الرقم -->
         <div>
-          <label id="destInputLabel" for="withdrawDestInput" class="block text-xs font-bold text-slate-300 mb-1.5">
-            عنوان المحفظة (Wallet Address) للشحن بالدولار:
-          </label>
-          <input id="withdrawDestInput" type="text" placeholder="أدخل الـ Address الخاص بك هنا..."
-            class="w-full bg-slate-900 border border-slate-700 focus:border-emerald-400 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none transition" />
+          <label id="destInputLabel" for="withdrawDestInput" class="block text-xs font-bold text-slate-300 mb-1.5">عنوان المحفظة (Wallet Address) للشحن بالدولار:</label>
+          <input id="withdrawDestInput" type="text" placeholder="أدخل الـ Address الخاص بك هنا..." class="w-full bg-slate-900 border border-slate-700 focus:border-emerald-400 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none transition" />
         </div>
-
-        <!-- زر تأكيد السحب -->
-        <button id="submitWithdrawBtn" type="button"
-          class="w-full py-3.5 rounded-xl font-extrabold text-sm transition shadow-lg bg-slate-800 text-slate-500 cursor-not-allowed">
-          أكمل شروط السحب أولاً ($1.00 + دعوتين)
-        </button>
+        <button id="submitWithdrawBtn" type="button" class="w-full py-3.5 rounded-xl font-extrabold text-sm transition shadow-lg bg-slate-800 text-slate-500 cursor-not-allowed">أكمل شروط السحب أولاً ($1.00 + دعوتين)</button>
       </div>
-
-      <!-- سجل طلبات السحب السابقة -->
-      <div class="glass-card rounded-2xl p-4 space-y-2.5">
-        <div class="flex items-center justify-between">
-          <h3 class="text-xs font-extrabold text-white">سجل طلبات السحب</h3>
-          <span id="withdrawCountBadge" class="text-[11px] text-slate-400">0 طلبات</span>
-        </div>
-        <div id="withdrawHistoryList" class="space-y-2 text-xs text-slate-400">
-          <p class="text-center py-3 text-slate-500">لا توجد طلبات سحب حتى الآن</p>
-        </div>
-      </div>
-
     </section>
-
   </main>
 
-  <!-- شريط التنقل السفلي: 3 قوائم (الرئيسية + الأصدقاء + السحب) -->
+  <!-- شريط التنقل السفلي -->
   <nav class="fixed bottom-0 inset-x-0 max-w-md mx-auto px-4 pb-3 pt-1 bg-gradient-to-t from-slate-950 via-slate-950/95 to-transparent z-40">
     <div class="glass-card rounded-2xl p-1.5 grid grid-cols-3 gap-1.5 shadow-2xl">
-      <button type="button" id="navMiningBtn" data-target="viewMining"
-        class="nav-btn py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-center gap-1.5 bg-emerald-500 text-slate-950 transition">
-        <span>⛏️</span>
-        <span>الرئيسية</span>
-      </button>
-
-      <button type="button" id="navFriendsBtn" data-target="viewFriends"
-        class="nav-btn py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-center gap-1.5 text-slate-300 hover:text-white transition">
-        <span>👥</span>
-        <span>الأصدقاء</span>
-      </button>
-
-      <button type="button" id="navWithdrawBtn" data-target="viewWithdraw"
-        class="nav-btn py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-center gap-1.5 text-slate-300 hover:text-white transition">
-        <span>💸</span>
-        <span>السحب</span>
-      </button>
+      <button type="button" id="navMiningBtn" data-target="viewMining" class="nav-btn py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-center gap-1.5 bg-emerald-500 text-slate-950 transition"><span>⛏️</span><span>الرئيسية</span></button>
+      <button type="button" id="navFriendsBtn" data-target="viewFriends" class="nav-btn py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-center gap-1.5 text-slate-300 hover:text-white transition"><span>👥</span><span>الأصدقاء</span></button>
+      <button type="button" id="navWithdrawBtn" data-target="viewWithdraw" class="nav-btn py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-center gap-1.5 text-slate-300 hover:text-white transition"><span>💸</span><span>السحب</span></button>
     </div>
   </nav>
 
   <script>
-    // إعدادات البوت وتليجرام
-    const ADMIN_BOT_TOKEN = ''; // ضع توكن بوتك هنا إن أردت إرسال طلبات السحب لتليجرام
+    const ADMIN_BOT_TOKEN = '';
     const ADMIN_CHAT_ID = '7392522079';
 
     const SECONDS_PER_DAY = 86400;
@@ -373,12 +279,7 @@
     }
 
     function createInitialState() {
-      return {
-        accruedUsd: 0,
-        referrals: 0,
-        selectedMethod: 'usdt',
-        withdrawals: []
-      };
+      return { accruedUsd: 0, referrals: 0, selectedMethod: 'usdt', withdrawals: [] };
     }
 
     function loadState() {
@@ -398,9 +299,7 @@
     }
 
     function saveState() {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-      } catch (e) {}
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
     }
 
     let state = loadState();
@@ -411,7 +310,6 @@
     function setPresenceState(active) {
       isUserActiveInApp = active;
       lastActiveTick = performance.now();
-
       const badge = document.getElementById('presenceBadge');
       const dot = document.getElementById('presenceDot');
       const text = document.getElementById('presenceText');
@@ -431,21 +329,10 @@
       }
     }
 
-    document.addEventListener('visibilitychange', function () {
-      setPresenceState(!document.hidden);
-    });
-
-    window.addEventListener('blur', function () {
-      if (document.hidden) setPresenceState(false);
-    });
-
-    window.addEventListener('focus', function () {
-      setPresenceState(true);
-    });
-
-    window.addEventListener('pagehide', function () {
-      saveState();
-    });
+    document.addEventListener('visibilitychange', () => setPresenceState(!document.hidden));
+    window.addEventListener('blur', () => { if (document.hidden) setPresenceState(false); });
+    window.addEventListener('focus', () => setPresenceState(true));
+    window.addEventListener('pagehide', () => saveState());
 
     function tickActiveMining() {
       const now = performance.now();
@@ -460,9 +347,7 @@
     function showToast(msg, type) {
       const container = document.getElementById('toastContainer');
       const el = document.createElement('div');
-      const colorClass = type === 'error'
-        ? 'bg-rose-600/95 border-rose-400/40'
-        : 'bg-emerald-600/95 border-emerald-400/40';
+      const colorClass = type === 'error' ? 'bg-rose-600/95 border-rose-400/40' : 'bg-emerald-600/95 border-emerald-400/40';
       el.className = `${colorClass} border text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-lg text-center transition-opacity duration-300`;
       el.textContent = msg;
       container.appendChild(el);
@@ -495,9 +380,6 @@
       document.getElementById('cyclePercentText').textContent = progressPct.toFixed(1) + '%';
       document.getElementById('cycleProgressBar').style.width = progressPct + '%';
 
-      const bonusHashTotal = state.referrals * REFERRAL_BONUS_HASH;
-      document.getElementById('referralEarnedHash').textContent = `+${bonusHashTotal.toLocaleString('en-US')} Hash`;
-
       updateWithdrawConditionsUI(currentUsd);
     }
 
@@ -507,9 +389,7 @@
 
       const refBadge = document.getElementById('referralBadge');
       refBadge.textContent = `${state.referrals} / ${REQUIRED_REFERRALS}`;
-      refBadge.className = hasEnoughRefs
-        ? 'mono-num text-base font-black text-emerald-400'
-        : 'mono-num text-base font-black text-cyan-400';
+      refBadge.className = hasEnoughRefs ? 'mono-num text-base font-black text-emerald-400' : 'mono-num text-base font-black text-cyan-400';
 
       document.getElementById('condBalanceIcon').textContent = hasEnoughBalance ? '✅' : '⏳';
       const balStatus = document.getElementById('condBalanceStatus');
@@ -528,13 +408,6 @@
         submitBtn.className = 'w-full py-3.5 rounded-xl font-extrabold text-sm transition shadow-lg bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 cursor-pointer';
       } else {
         submitBtn.disabled = true;
-        if (!hasEnoughBalance && !hasEnoughRefs) {
-          submitBtn.textContent = 'أكمل شروط السحب أولاً ($1.00 + دعوتين)';
-        } else if (!hasEnoughBalance) {
-          submitBtn.textContent = 'يجب الوصول إلى $1.00 على الأقل للسحب';
-        } else if (!hasEnoughRefs) {
-          submitBtn.textContent = `تحتاج إلى دعوة ${REQUIRED_REFERRALS - state.referrals} أصدقاء إضافيين للسحب`;
-        }
         submitBtn.className = 'w-full py-3.5 rounded-xl font-extrabold text-sm transition bg-slate-800 text-slate-500 cursor-not-allowed';
       }
     }
@@ -559,51 +432,15 @@
       }
     }
 
-    function renderWithdrawHistory() {
-      const list = document.getElementById('withdrawHistoryList');
-      const badge = document.getElementById('withdrawCountBadge');
-      badge.textContent = `${state.withdrawals.length} طلبات`;
-
-      if (state.withdrawals.length === 0) {
-        list.innerHTML = '<p class="text-center py-3 text-slate-500">لا توجد طلبات سحب حتى الآن</p>';
-        return;
-      }
-
-      list.innerHTML = '';
-      state.withdrawals.slice().reverse().forEach(item => {
-        const row = document.createElement('div');
-        row.className = 'p-3 rounded-xl bg-slate-900/90 border border-slate-800 flex items-center justify-between gap-2';
-        const methodTitle = item.method === 'usdt' ? '💵 سحب دولار (Address)' : '📱 فودافون كاش';
-        row.innerHTML = `
-          <div class="truncate">
-            <div class="flex items-center gap-2">
-              <span class="font-bold text-white">${methodTitle}</span>
-              <span class="mono-num font-extrabold text-emerald-400">$1.00</span>
-            </div>
-            <p class="text-[11px] text-slate-400 truncate mt-0.5 mono-num">${item.destination}</p>
-            <p class="text-[10px] text-slate-500 mt-0.5">${item.date}</p>
-          </div>
-          <span class="shrink-0 px-2.5 py-1 rounded-lg bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[10px] font-bold">
-            قيد المراجعة ⏳
-          </span>
-        `;
-        list.appendChild(row);
-      });
-    }
-
-    // التنقل بين القوائم
     document.querySelectorAll('.nav-btn').forEach(btn => {
       btn.addEventListener('click', function () {
         const target = this.getAttribute('data-target');
         ['viewMining', 'viewFriends', 'viewWithdraw'].forEach(viewId => {
           document.getElementById(viewId).classList.toggle('hidden', viewId !== target);
         });
-
         document.querySelectorAll('.nav-btn').forEach(b => {
           const active = b.getAttribute('data-target') === target;
-          b.className = active
-            ? 'nav-btn py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-center gap-1.5 bg-emerald-500 text-slate-950 transition'
-            : 'nav-btn py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-center gap-1.5 text-slate-300 hover:text-white transition';
+          b.className = active ? 'nav-btn py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-center gap-1.5 bg-emerald-500 text-slate-950 transition' : 'nav-btn py-2.5 rounded-xl text-xs font-extrabold flex items-center justify-center gap-1.5 text-slate-300 hover:text-white transition';
         });
       });
     });
@@ -611,27 +448,8 @@
     document.getElementById('copyRefBtn').addEventListener('click', function () {
       const input = document.getElementById('refLinkInput');
       input.select();
-      try {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(input.value);
-        } else {
-          document.execCommand('copy');
-        }
-      } catch (e) {
-        try { document.execCommand('copy'); } catch (err) {}
-      }
+      try { document.execCommand('copy'); } catch (e) {}
       showToast('تم نسخ رابط الدعوة الخاص بك بنجاح!', 'success');
-    });
-
-    document.getElementById('shareTelegramRefBtn').addEventListener('click', function () {
-      const refUrl = document.getElementById('refLinkInput').value;
-      const shareText = 'انضم لتطبيق Maining للتعدين المجاني واسحب أرباحك بالدولار أو فودافون كاش!';
-      const fullShareUrl = `https://t.me/share/url?url=${encodeURIComponent(refUrl)}&text=${encodeURIComponent(shareText)}`;
-      if (tg && typeof tg.openTelegramLink === 'function') {
-        tg.openTelegramLink(fullShareUrl);
-      } else {
-        window.open(fullShareUrl, '_blank', 'noopener,noreferrer');
-      }
     });
 
     document.querySelectorAll('.method-select-btn').forEach(btn => {
@@ -642,58 +460,12 @@
       });
     });
 
-    document.getElementById('submitWithdrawBtn').addEventListener('click', function () {
-      if (isSubmittingWithdrawal) return;
-
-      const currentUsd = tickActiveMining();
-      if (currentUsd < WITHDRAW_FIXED_USD) {
-        showToast('رصيدك أقل من 1.00 دولار!', 'error');
-        return;
-      }
-      if (state.referrals < REQUIRED_REFERRALS) {
-        showToast('يجب دعوة شخصين على الأقل لتفعيل السحب!', 'error');
-        return;
-      }
-
-      const destInput = document.getElementById('withdrawDestInput');
-      const destination = destInput.value.trim();
-
-      if (!destination || destination.length < 6) {
-        showToast('يرجى إدخال العنوان أو الرقم بشكل صحيح!', 'error');
-        return;
-      }
-
-      isSubmittingWithdrawal = true;
-      state.accruedUsd = Math.max(0, state.accruedUsd - WITHDRAW_FIXED_USD);
-
-      const nowStr = new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
-      state.withdrawals.push({
-        id: 'wd_' + Date.now(),
-        method: state.selectedMethod,
-        amount: WITHDRAW_FIXED_USD,
-        destination: destination,
-        date: 'اليوم - ' + nowStr
-      });
-
-      saveState();
-      destInput.value = '';
-      renderWithdrawHistory();
-      updateLiveCounters();
-
-      showToast('تم إرسال طلب سحب $1.00 بنجاح!', 'success');
-
-      setTimeout(() => {
-        isSubmittingWithdrawal = false;
-        updateLiveCounters();
-      }, 600);
-    });
-
     // =========================================================================
-    // إعدادات وتشغيل إعلان المكافأة Monetag (Zone: 12007986) + الحد الأقصى 12 يومياً
+    // تعديل آمن لمنع الثغرة: عداد إجباري زمني داخل التطبيق (20 ثانية)
     // =========================================================================
     const AD_REWARD_HASH = 500;
     const AD_COOLDOWN_SECONDS = 10;
-    const MAX_DAILY_ADS = 12; // الحد الأقصى 12 إعلاناً في اليوم
+    const MAX_DAILY_ADS = 12;
     let adCooldownTimer = null;
     let adCooldownRemaining = 0;
 
@@ -728,16 +500,27 @@
       }
     }
 
-    function startAdCooldown() {
+    function grantAdReward() {
+      incrementAdsCount();
+      tickActiveMining();
+      const rewardUsd = AD_REWARD_HASH / HASH_PER_DOLLAR;
+      state.accruedUsd += rewardUsd;
+      saveState();
+      updateLiveCounters();
+      showToast('مبروك! حصلت على +500 H من مشاهدة الإعلان ⚡', 'success');
+      
       if (getTodayAdsCount() >= MAX_DAILY_ADS) {
         const btn = document.getElementById('watchAdRewardBtn');
         const btnText = document.getElementById('watchAdBtnText');
         btn.disabled = true;
         btn.className = AD_BTN_COOLDOWN_CLASS;
         btnText.textContent = 'تم بلوغ الحد الأقصى';
-        return;
+      } else {
+        startAdCooldown();
       }
+    }
 
+    function startAdCooldown() {
       const btn = document.getElementById('watchAdRewardBtn');
       const btnText = document.getElementById('watchAdBtnText');
       if (adCooldownTimer) clearInterval(adCooldownTimer);
@@ -767,26 +550,6 @@
       }, 1000);
     }
 
-    function grantAdReward() {
-      incrementAdsCount();
-      tickActiveMining();
-      const rewardUsd = AD_REWARD_HASH / HASH_PER_DOLLAR;
-      state.accruedUsd += rewardUsd;
-      saveState();
-      updateLiveCounters();
-      showToast('مبروك! حصلت على +500 H من مشاهدة الإعلان ⚡', 'success');
-      
-      if (getTodayAdsCount() >= MAX_DAILY_ADS) {
-        const btn = document.getElementById('watchAdRewardBtn');
-        const btnText = document.getElementById('watchAdBtnText');
-        btn.disabled = true;
-        btn.className = AD_BTN_COOLDOWN_CLASS;
-        btnText.textContent = 'تم بلوغ الحد الأقصى';
-      } else {
-        startAdCooldown();
-      }
-    }
-
     function handleWatchRewardedAd() {
       if (getTodayAdsCount() >= MAX_DAILY_ADS) {
         const btn = document.getElementById('watchAdRewardBtn');
@@ -803,25 +566,27 @@
       const btnText = document.getElementById('watchAdBtnText');
 
       if (typeof show_12007986 === 'function') {
-        btn.disabled = true;
-        btnText.textContent = 'جاري تحميل الإعلان...';
+        // فتح الإعلان فوراً
+        show_12007986();
 
-        show_12007986()
-          .then(() => {
+        // تفعيل العداد الإجباري داخل التطبيق لمنع الهروب بزر الاستمرار
+        btn.disabled = true;
+        btn.className = AD_BTN_COOLDOWN_CLASS;
+        let mandatoryTimer = 20; // 20 ثانية عداد إجباري
+
+        btnText.textContent = `⏳ يرجى إتمام مشاهدة الإعلان (${mandatoryTimer} ث)...`;
+
+        const mandatoryInterval = setInterval(() => {
+          mandatoryTimer -= 1;
+          if (mandatoryTimer > 0) {
+            btnText.textContent = `⏳ يرجى إتمام مشاهدة الإعلان (${mandatoryTimer} ث)...`;
+          } else {
+            clearInterval(mandatoryInterval);
+            // الآن وبعد مرور الـ 20 ثانية إجبارياً داخل التطبيق، نمنح الهاش للمستخدم
             grantAdReward();
-          })
-          .catch(() => {
-            if (getTodayAdsCount() >= MAX_DAILY_ADS) {
-              btn.disabled = true;
-              btn.className = AD_BTN_COOLDOWN_CLASS;
-              btnText.textContent = 'تم بلوغ الحد الأقصى';
-            } else {
-              btn.disabled = false;
-              btn.className = AD_BTN_NORMAL_CLASS;
-              btnText.textContent = '🎬 شاهد إعلان واربح 500 H';
-            }
-            showToast('لم يكتمل الإعلان أو لا يوجد إعلان متاح حالياً، حاول مرة أخرى', 'error');
-          });
+          }
+        }, 1000);
+
       } else {
         showToast('جاري تجهيز الإعلانات، يرجى المحاولة بعد لحظات', 'error');
       }
@@ -833,8 +598,6 @@
       initUserHeader();
       setPresenceState(!document.hidden);
       updateMethodSelectionUI();
-      renderWithdrawHistory();
-      updateLiveCounters();
       checkDailyLimitOnLoad();
 
       setInterval(() => {
