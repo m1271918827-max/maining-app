@@ -689,17 +689,55 @@
     });
 
     // =========================================================================
-    // إعدادات وتشغيل إعلان المكافأة Monetag (Zone: 12007986) + تهدئة 10 ثوانٍ
+    // إعدادات وتشغيل إعلان المكافأة Monetag (Zone: 12007986) + الحد الأقصى 12 يومياً
     // =========================================================================
     const AD_REWARD_HASH = 500;
     const AD_COOLDOWN_SECONDS = 10;
+    const MAX_DAILY_ADS = 12; // الحد الأقصى 12 إعلاناً في اليوم
     let adCooldownTimer = null;
     let adCooldownRemaining = 0;
 
     const AD_BTN_NORMAL_CLASS = 'w-full mt-3 py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-300 hover:from-amber-400 hover:to-yellow-200 active:scale-[0.98] text-slate-950 font-black text-sm shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 transition cursor-pointer border border-amber-200/50';
     const AD_BTN_COOLDOWN_CLASS = 'w-full mt-3 py-3.5 px-4 rounded-2xl bg-slate-800 text-slate-400 font-extrabold text-sm flex items-center justify-center gap-2 transition cursor-not-allowed border border-slate-700';
 
+    function getTodayAdsCount() {
+      const todayStr = new Date().toDateString();
+      const storedDate = localStorage.getItem('maining_ads_date');
+      if (storedDate !== todayStr) {
+        localStorage.setItem('maining_ads_date', todayStr);
+        localStorage.setItem('maining_ads_count', '0');
+        return 0;
+      }
+      return parseInt(localStorage.getItem('maining_ads_count') || '0', 10);
+    }
+
+    function incrementAdsCount() {
+      const count = getTodayAdsCount() + 1;
+      localStorage.setItem('maining_ads_count', count.toString());
+    }
+
+    function checkDailyLimitOnLoad() {
+      if (getTodayAdsCount() >= MAX_DAILY_ADS) {
+        const btn = document.getElementById('watchAdRewardBtn');
+        const btnText = document.getElementById('watchAdBtnText');
+        if (btn && btnText) {
+          btn.disabled = true;
+          btn.className = AD_BTN_COOLDOWN_CLASS;
+          btnText.textContent = 'تم بلوغ الحد الأقصى';
+        }
+      }
+    }
+
     function startAdCooldown() {
+      if (getTodayAdsCount() >= MAX_DAILY_ADS) {
+        const btn = document.getElementById('watchAdRewardBtn');
+        const btnText = document.getElementById('watchAdBtnText');
+        btn.disabled = true;
+        btn.className = AD_BTN_COOLDOWN_CLASS;
+        btnText.textContent = 'تم بلوغ الحد الأقصى';
+        return;
+      }
+
       const btn = document.getElementById('watchAdRewardBtn');
       const btnText = document.getElementById('watchAdBtnText');
       if (adCooldownTimer) clearInterval(adCooldownTimer);
@@ -716,24 +754,49 @@
         } else {
           clearInterval(adCooldownTimer);
           adCooldownTimer = null;
-          btn.disabled = false;
-          btn.className = AD_BTN_NORMAL_CLASS;
-          btnText.textContent = '🎬 شاهد إعلان واربح 500 H';
+          if (getTodayAdsCount() >= MAX_DAILY_ADS) {
+            btn.disabled = true;
+            btn.className = AD_BTN_COOLDOWN_CLASS;
+            btnText.textContent = 'تم بلوغ الحد الأقصى';
+          } else {
+            btn.disabled = false;
+            btn.className = AD_BTN_NORMAL_CLASS;
+            btnText.textContent = '🎬 شاهد إعلان واربح 500 H';
+          }
         }
       }, 1000);
     }
 
     function grantAdReward() {
+      incrementAdsCount();
       tickActiveMining();
       const rewardUsd = AD_REWARD_HASH / HASH_PER_DOLLAR;
       state.accruedUsd += rewardUsd;
       saveState();
       updateLiveCounters();
       showToast('مبروك! حصلت على +500 H من مشاهدة الإعلان ⚡', 'success');
-      startAdCooldown();
+      
+      if (getTodayAdsCount() >= MAX_DAILY_ADS) {
+        const btn = document.getElementById('watchAdRewardBtn');
+        const btnText = document.getElementById('watchAdBtnText');
+        btn.disabled = true;
+        btn.className = AD_BTN_COOLDOWN_CLASS;
+        btnText.textContent = 'تم بلوغ الحد الأقصى';
+      } else {
+        startAdCooldown();
+      }
     }
 
     function handleWatchRewardedAd() {
+      if (getTodayAdsCount() >= MAX_DAILY_ADS) {
+        const btn = document.getElementById('watchAdRewardBtn');
+        const btnText = document.getElementById('watchAdBtnText');
+        btn.disabled = true;
+        btn.className = AD_BTN_COOLDOWN_CLASS;
+        btnText.textContent = 'تم بلوغ الحد الأقصى';
+        return;
+      }
+
       if (adCooldownRemaining > 0) return;
 
       const btn = document.getElementById('watchAdRewardBtn');
@@ -748,9 +811,15 @@
             grantAdReward();
           })
           .catch(() => {
-            btn.disabled = false;
-            btn.className = AD_BTN_NORMAL_CLASS;
-            btnText.textContent = '🎬 شاهد إعلان واربح 500 H';
+            if (getTodayAdsCount() >= MAX_DAILY_ADS) {
+              btn.disabled = true;
+              btn.className = AD_BTN_COOLDOWN_CLASS;
+              btnText.textContent = 'تم بلوغ الحد الأقصى';
+            } else {
+              btn.disabled = false;
+              btn.className = AD_BTN_NORMAL_CLASS;
+              btnText.textContent = '🎬 شاهد إعلان واربح 500 H';
+            }
             showToast('لم يكتمل الإعلان أو لا يوجد إعلان متاح حالياً، حاول مرة أخرى', 'error');
           });
       } else {
@@ -766,6 +835,7 @@
       updateMethodSelectionUI();
       renderWithdrawHistory();
       updateLiveCounters();
+      checkDailyLimitOnLoad();
 
       setInterval(() => {
         updateLiveCounters();
