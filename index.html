@@ -4,27 +4,29 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Maining - Telegram Cloud Mining</title>
+
   <!-- مكتبة تليجرام الرسمية للميني آب -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <!-- مكتبة إعلانات Adsgram الرسمية لتطبيقات تليجرام -->
-  <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
-  <!-- Tailwind CSS -->
-  <!-- كود مونتاج الجديد -->
-  <script src='//libtl.com/sdk.js' data-zone='12149919' data-sdk='show_12149919'></script>
-<script src='//libtl.com/sdk.js' data-zone='12007986' data-sdk='show_12007986'></script>
+
+  <!-- أكواد منصة Monetag للإعلانات -->
+  <script src="//libtl.com/sdk.js" data-zone="12149919" data-sdk="show_12149919"></script>
+  <script src="//libtl.com/sdk.js" data-zone="12007986" data-sdk="show_12007986"></script>
   <script>
-    // إعلانات التفاعل عند الانتقال بين القوائم وفي الوقت المحدد
-    show_12149919({
-      type: 'inApp',
-      inAppSettings: {
-        frequency: 2,
-        capping: 0.1,
-        interval: 30,
-        timeout: 5,
-        everyPage: false
-      }
-    });
-</script>
+    // تشغيل إعلانات التفاعل عند الانتقال بين القوائم وفي الوقت المحدد
+    if (typeof show_12149919 === 'function') {
+      show_12149919({
+        type: 'inApp',
+        inAppSettings: {
+          frequency: 2,
+          capping: 0.1,
+          interval: 30,
+          timeout: 5,
+          everyPage: false
+        }
+      });
+    }
+  </script>
+
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@500;700;800&display=swap" rel="stylesheet">
   <style>
@@ -149,9 +151,9 @@
           </div>
         </div>
 
-        <!-- زر مشاهدة إعلان للحصول على 500 H مع فترة تهدئة 10 ثوانٍ وزرار ذهبي -->
-      <button id="watchAdRewardBtn" type="button" onclick="claimHashReward()"
-     class="w-full mt-3 py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-300 hover:from-amber-400 hover:to-yellow-200 active:scale-[0.98] text-slate-950 font-black text-sm shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 transition cursor-pointer border border-amber-200/50">
+        <!-- زر مشاهدة إعلان للحصول على 500 H مع فترة تهدئة 10 ثوانٍ -->
+        <button id="watchAdRewardBtn" type="button"
+          class="w-full mt-3 py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-300 hover:from-amber-400 hover:to-yellow-200 active:scale-[0.98] text-slate-950 font-black text-sm shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 transition cursor-pointer border border-amber-200/50">
           <span id="watchAdBtnText">🎬 شاهد إعلان واربح 500 H</span>
         </button>
       </div>
@@ -163,7 +165,7 @@
     <!-- ========================================== -->
     <section id="viewFriends" class="hidden space-y-4 my-auto">
 
-      <!-- بطاقة مكافأة الدعوة (+5,000 هاش لكل صديق) -->
+      <!-- بطاقة مكافأة الدعوة -->
       <div class="glass-card rounded-3xl p-5 text-center space-y-3 relative overflow-hidden">
         <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-400 to-emerald-500 text-slate-950 flex items-center justify-center text-3xl mx-auto shadow-lg">
           🎁
@@ -265,7 +267,7 @@
         </div>
       </div>
 
-      <!-- اختيار طريقة السحب (طريقتان فقط: دولار USDT أو فودافون كاش) -->
+      <!-- اختيار طريقة السحب -->
       <div class="glass-card rounded-2xl p-4 space-y-4">
         <div>
           <label class="block text-xs font-extrabold text-white mb-2">اختر طريقة السحب:</label>
@@ -304,7 +306,7 @@
             class="w-full bg-slate-900 border border-slate-700 focus:border-emerald-400 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none transition" />
         </div>
 
-        <!-- زر تأكيد السحب (محمي ضد الجليتش ويخصم 1$ فوراً) -->
+        <!-- زر تأكيد السحب -->
         <button id="submitWithdrawBtn" type="button"
           class="w-full py-3.5 rounded-xl font-extrabold text-sm transition shadow-lg bg-slate-800 text-slate-500 cursor-not-allowed">
           أكمل شروط السحب أولاً ($1.00 + دعوتين)
@@ -687,26 +689,15 @@
     });
 
     // =========================================================================
-    // إعدادات وتشغيل إعلانات Adsgram الرسمية (Block ID: 56745) + تهدئة 10 ثوانٍ
+    // إعدادات وتشغيل إعلان المكافأة Monetag (Zone: 12007986) + تهدئة 10 ثوانٍ
     // =========================================================================
-    const ADSGRAM_BLOCK_ID = '56745';
     const AD_REWARD_HASH = 500;
     const AD_COOLDOWN_SECONDS = 10;
-    let AdController = null;
     let adCooldownTimer = null;
     let adCooldownRemaining = 0;
 
     const AD_BTN_NORMAL_CLASS = 'w-full mt-3 py-3.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-300 hover:from-amber-400 hover:to-yellow-200 active:scale-[0.98] text-slate-950 font-black text-sm shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 transition cursor-pointer border border-amber-200/50';
     const AD_BTN_COOLDOWN_CLASS = 'w-full mt-3 py-3.5 px-4 rounded-2xl bg-slate-800 text-slate-400 font-extrabold text-sm flex items-center justify-center gap-2 transition cursor-not-allowed border border-slate-700';
-
-    function initAdsgramController() {
-      const isTelegramEnv = Boolean(tg && tg.initDataUnsafe && (tg.initDataUnsafe.user || tg.initDataUnsafe.query_id));
-      if (window.Adsgram && isTelegramEnv) {
-        try {
-          AdController = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID });
-        } catch (e) {}
-      }
-    }
 
     function startAdCooldown() {
       const btn = document.getElementById('watchAdRewardBtn');
@@ -747,17 +738,12 @@
 
       const btn = document.getElementById('watchAdRewardBtn');
       const btnText = document.getElementById('watchAdBtnText');
-      const isTelegramEnv = Boolean(tg && tg.initDataUnsafe && (tg.initDataUnsafe.user || tg.initDataUnsafe.query_id));
 
-      if (!AdController && isTelegramEnv) {
-        initAdsgramController();
-      }
-
-      if (AdController && isTelegramEnv) {
+      if (typeof show_12007986 === 'function') {
         btn.disabled = true;
         btnText.textContent = 'جاري تحميل الإعلان...';
 
-        AdController.show()
+        show_12007986()
           .then(() => {
             grantAdReward();
           })
@@ -768,15 +754,13 @@
             showToast('لم يكتمل الإعلان أو لا يوجد إعلان متاح حالياً، حاول مرة أخرى', 'error');
           });
       } else {
-        // في حالة المعاينة خارج تليجرام، نمنح المكافأة مباشرة للتجربة بسلاسة
-        grantAdReward();
+        showToast('جاري تجهيز الإعلانات، يرجى المحاولة بعد لحظات', 'error');
       }
     }
 
     document.getElementById('watchAdRewardBtn').addEventListener('click', handleWatchRewardedAd);
 
     window.onload = function () {
-      initAdsgramController();
       initUserHeader();
       setPresenceState(!document.hidden);
       updateMethodSelectionUI();
@@ -794,23 +778,5 @@
       }, 3000);
     };
   </script>
-  </script>
-
-    <!-- هنحط كود الإعلان الجديد هنا -->
-    <script>
-    function claimHashReward() {
-        if (typeof show_12007986 === 'function') {
-            show_12007986().then(() => {
-                alert('تمت مشاهدة الإعلان بنجاح! مبروك المكافأة.');
-                // هنا سيتم إضافة المكافأة
-            }).catch(e => {
-                console.log("خطأ في الإعلان:", e);
-            });
-        }
-    }
-    </script>
-
-</body>
-</html>
 </body>
 </html>
