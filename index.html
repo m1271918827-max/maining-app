@@ -211,7 +211,7 @@
     const USD_PER_SECOND = HASH_PER_SECOND / HASH_PER_DOLLAR;
     const WITHDRAW_FIXED_USD = 1.0;
     const REQUIRED_REFERRALS = 2;
-    const STORAGE_KEY = 'maining_app_state_v5'; // تم تغيير الإصدار لمنع تداخل الكاش القديم
+    const STORAGE_KEY = 'maining_app_state_v6'; // نسخة جديدة لمنع تداخل الكاش
 
     const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
     if (tg) {
@@ -250,23 +250,6 @@
     function setPresenceState(active) {
       isUserActiveInApp = active;
       lastActiveTick = performance.now();
-      const badge = document.getElementById('presenceBadge');
-      const dot = document.getElementById('presenceDot');
-      const text = document.getElementById('presenceText');
-      const spinner = document.getElementById('miningSpinnerRing');
-
-      if (active) {
-        badge.className = 'inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold';
-        dot.className = 'w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping';
-        text.textContent = 'متواجد (يعدّن الآن)';
-        spinner.style.animationPlayState = 'running';
-      } else {
-        badge.className = 'inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30 font-bold';
-        dot.className = 'w-1.5 h-1.5 rounded-full bg-rose-400';
-        text.textContent = 'متوقف (خارج البوت)';
-        spinner.style.animationPlayState = 'paused';
-        saveState();
-      }
     }
 
     document.addEventListener('visibilitychange', () => setPresenceState(!document.hidden));
@@ -330,9 +313,9 @@
     });
 
     // =========================================================================
-    // نظام الإعلانات الآمن (ثابت على 500 هاش بالضبط + حد أقصى 12 + عداد إجباري)
+    // نظام الإعلانات الصارم (قيم ثابتة 500 هاش بدقة + عداد إجباري 20 ثانية)
     // =========================================================================
-    const EXACT_AD_HASH = 500; // القيمة الثابتة والصارمة حصرياً
+    const EXACT_AD_HASH = 500; 
     const MAX_DAILY_ADS = 12;
     const AD_COOLDOWN_SECONDS = 10;
     let adCooldownTimer = null;
@@ -343,18 +326,18 @@
 
     function getTodayAdsCount() {
       const todayStr = new Date().toDateString();
-      const storedDate = localStorage.getItem('maining_ads_date_v5');
+      const storedDate = localStorage.getItem('maining_ads_date_v6');
       if (storedDate !== todayStr) {
-        localStorage.setItem('maining_ads_date_v5', todayStr);
-        localStorage.setItem('maining_ads_count_v5', '0');
+        localStorage.setItem('maining_ads_date_v6', todayStr);
+        localStorage.setItem('maining_ads_count_v6', '0');
         return 0;
       }
-      return parseInt(localStorage.getItem('maining_ads_count_v5') || '0', 10);
+      return parseInt(localStorage.getItem('maining_ads_count_v6') || '0', 10);
     }
 
     function incrementAdsCount() {
       const count = getTodayAdsCount() + 1;
-      localStorage.setItem('maining_ads_count_v5', count.toString());
+      localStorage.setItem('maining_ads_count_v6', count.toString());
     }
 
     function checkDailyLimitOnLoad() {
@@ -371,11 +354,14 @@
 
     function grantAdReward() {
       incrementAdsCount();
-      tickActiveMining();
       
-      // حساب الدولار بناءً على 500 هاش فقط بدقة تامة ودون أي مضاعفة
-      const rewardUsd = EXACT_AD_HASH / HASH_PER_DOLLAR;
-      state.accruedUsd += rewardUsd;
+      // تحديث آخر علامة زمنية لتفادي قفزات التعدين
+      lastActiveTick = performance.now();
+
+      // إضافة 500 هاش بالضبط بصورة مستقلة ومضبوطة رياضياً
+      const exactUsdReward = EXACT_AD_HASH / HASH_PER_DOLLAR;
+      state.accruedUsd += exactUsdReward;
+      
       saveState();
       updateLiveCounters();
       
@@ -441,10 +427,10 @@
         // فتح الإعلان
         show_12007986();
 
-        // قفل الزر وعمل عداد إجباري زمني لمدة 25 ثانية داخل التطبيق لمنع الهروب بزر الاستمرار
+        // قفل الزر وعمل عداد إجباري زمني لمدة 20 ثانية داخل التطبيق (منع ثغرة زر الاستمرار والهروب)
         btn.disabled = true;
         btn.className = AD_BTN_COOLDOWN_CLASS;
-        let mandatoryTimer = 25; 
+        let mandatoryTimer = 20; 
 
         btnText.textContent = `⏳ يرجى إتمام الإعلان (${mandatoryTimer} ث)...`;
 
@@ -454,7 +440,7 @@
             btnText.textContent = `⏳ يرجى إتمام الإعلان (${mandatoryTimer} ث)...`;
           } else {
             clearInterval(mandatoryInterval);
-            // منح الـ 500 هاش بدقة تامة بعد إتمام الوقت الداخلي
+            // منح الـ 500 هاش بدقة تامة وبشكل نظيف
             grantAdReward();
           }
         }, 1000);
